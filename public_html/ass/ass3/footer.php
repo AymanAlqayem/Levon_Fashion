@@ -1,4 +1,5 @@
 <footer>
+    <div class="footer-wave"></div>
 
     <section class="footer-content">
 
@@ -23,38 +24,40 @@
             </nav>
         </section>
 
-        <section class="contact-info">
+        <section class="footer-section contact-info">
             <h3>Contact Info</h3>
             <address>
                 <div class="contact-item">
                     <span class="contact-icon">📍</span>
-                    <section>
+                    <div>
                         <strong>Store Address:</strong><br>
                         Palestine, Ramallah,<br>
                         Israa Complex, second floor
-                    </section>
+                    </div>
                 </div>
 
-                <section class="contact-item">
+                <div class="contact-item">
                     <span class="contact-icon">📞</span>
                     <div>
                         <strong>Customer Support:</strong><br>
                         <a href="tel:+972594276335">+972 59 427 6335</a>
                     </div>
-                </section>
+                </div>
 
-                <section class="contact-item">
+                <div class="contact-item">
                     <span class="contact-icon">📧</span>
                     <div>
                         <strong>Email:</strong><br>
                         <a href="mailto:nabilayman021@gmail.com">nabilayman021@gmail.com</a>
                     </div>
-                </section>
+                </div>
             </address>
         </section>
     </section>
 
     <section class="copyright">
-        © 2025 Levon Fashion. All Rights Reserved. | Privacy Policy | Terms of Service
+        © 2025 Levon Fashion. All Rights Reserved. |
+        Privacy Policy |
+        Terms of Service
     </section>
 </footer>

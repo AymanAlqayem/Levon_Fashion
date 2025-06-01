@@ -89,10 +89,10 @@ try {
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<!-- Including header -->
+
 <?php include_once "header.php"; ?>
 
-<!-- Including navigation -->
+
 <?php include_once "nav.php"; ?>
 
 <!-- Main content with grid layout -->
