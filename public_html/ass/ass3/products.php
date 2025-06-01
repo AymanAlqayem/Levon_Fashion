@@ -3,44 +3,62 @@ require_once "dbconfig.inc.php";
 require_once "Product.php";
 
 try {
-    // Establish the PDO connection
+    // Establish PDO connection
     $pdo = getPDOConnection();
 
-    // Base query
+    // Set up pagination
+    $productsPerPage = 10;
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $offset = ($page - 1) * $productsPerPage;
+
+    // Define base queries
     $query = "SELECT * FROM products";
+    $countQuery = "SELECT COUNT(*) FROM products";
     $conditions = [];
     $params = [];
 
-    // Get form input
+    // Process form input
     $productName = isset($_POST['productName']) ? trim($_POST['productName']) : '';
     $productPrice = isset($_POST['productPrice']) ? trim($_POST['productPrice']) : '';
     $productCategory = isset($_POST['productCategory']) ? trim($_POST['productCategory']) : '';
 
-    // Build WHERE clause if form was submitted
+    // Build WHERE clause for search
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($productName !== '') {
             $conditions[] = "product_name LIKE :productName";
             $params[':productName'] = '%' . $productName . '%';
         }
-
         if ($productCategory !== '') {
             $conditions[] = "TRIM(category) = :productCategory";
             $params[':productCategory'] = $productCategory;
         }
-
         if ($productPrice !== '' && is_numeric($productPrice)) {
             $conditions[] = "price <= :productPrice";
             $params[':productPrice'] = $productPrice;
         }
-
         if (count($conditions) > 0) {
             $query .= " WHERE " . implode(" AND ", $conditions);
+            $countQuery .= " WHERE " . implode(" AND ", $conditions);
         }
     }
 
-    // Execute prepared statement
+    // Count total products for pagination
+    $countStmt = $pdo->prepare($countQuery);
+    $countStmt->execute($params);
+    $totalProducts = $countStmt->fetchColumn();
+    $totalPages = ceil($totalProducts / $productsPerPage);
+
+    // Add pagination to query
+    $query .= " ORDER BY product_id ASC LIMIT :offset, :limit";
     $stmt = $pdo->prepare($query);
-    $stmt->execute($params);
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value);
+    }
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', (int)$productsPerPage, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Fetch results
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Convert rows to Product objects
@@ -57,7 +75,6 @@ try {
             $row['quantity']
         );
     }
-
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit;
@@ -69,142 +86,100 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>LEVON - Wear Your Style, Anywhere</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<!-- Including header -->
+<?php include_once "header.php"; ?>
 
-<header>
-    <h1>👕👗 WELCOME TO LEVON 👠🧥</h1>
-    <h2>"Wear Your Style, Anywhere"</h2>
+<!-- Including navigation -->
+<?php include_once "nav.php"; ?>
 
-    <figure>
-        <img src="images/logo.png" alt="Levon logo" width="200" height="180">
-        <figcaption><strong>Your Fashion Destination</strong></figcaption>
-    </figure>
-
-    <hr>
-    <br><br>
-
-    <nav>
-        🏠 <a href="products.php">Home</a> |
-        ➕ <a href="add.php">Add Product</a> |
-        🔍 <a href="#search">Search</a>
-    </nav>
-    <br>
-    <hr>
-</header>
-
-<main>
-    <section id="search">
-        <h2>🛍️ Explore & Find Your Perfect Fit</h2>
-        <p>Use the form below to filter our catalog!</p>
-
-        <figure>
-            <img src="images/search.png" alt="search" width="320" height="220">
-        </figure>
-        <br>
-
+<!-- Main content with grid layout -->
+<main class="container">
+    <!-- Search panel -->
+    <aside class="search-panel">
         <section>
-            <fieldset>
-                <legend>🔍 Advanced Product Search</legend>
-
-                <form method="POST" action="products.php">
-                    <fieldset>
-                        <legend>✨ Search by Your Preferences</legend>
-
-                        <p>
-                            <label for="productName">🧾 Product Name:</label><br>
-                            <input type="text" name="productName" id="productName"
-                                   placeholder="e.g., Classic Denim Jacket"
-                                   value="<?php echo htmlspecialchars($productName); ?>">
-                        </p>
-
-                        <p>
-                            <label for="productPrice">💰 Max Price:</label><br>
-                            <input type="text" name="productPrice" id="productPrice" placeholder="e.g., 80"
-                                   value="<?php echo htmlspecialchars($productPrice); ?>">
-                        </p>
-
-                        <p>
-                            <label for="productCategory">📂 Category:</label><br>
-                            <select name="productCategory" id="productCategory">
-                                <option value="">-- Choose Category --</option>
-                                <option value="Formal Shirts" <?php if ($productCategory === 'Formal Shirts') echo 'selected'; ?>>
-                                    Formal Shirts
-                                </option>
-                                <option value="Casual T-Shirts" <?php if ($productCategory === 'Casual T-Shirts') echo 'selected'; ?>>
-                                    Casual T-Shirts
-                                </option>
-                                <option value="Jeans" <?php if ($productCategory === 'Jeans') echo 'selected'; ?>>Jeans
-                                </option>
-                                <option value="Outerwear" <?php if ($productCategory === 'Outerwear') echo 'selected'; ?>>
-                                    Outerwear
-                                </option>
-                                <option value="Activewear" <?php if ($productCategory === 'Activewear') echo 'selected'; ?>>
-                                    Activewear
-                                </option>
-                            </select>
-                        </p>
-
-                        <p>
-                            <button type="submit">🔎 Filter Products</button>
-                        </p>
-                    </fieldset>
-                </form>
-
-                <br>
-
-                <section>
-                    <table border="1" cellpadding="10" cellspacing="0" width="100%">
-                        <caption>🛒 Product Listings</caption>
-                        <thead>
-                        <tr>
-                            <th width="200">📷 Product Image</th>
-                            <th width="80">🆔 Product ID</th>
-                            <th width="150">🔖 Product Name</th>
-                            <th width="150">🏷️ Category</th>
-                            <th width="80">💵 Price</th>
-                            <th width="80">📦 Quantity</th>
-                            <th width="120">⚙️ Actions</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <?php if (count($products) > 0): ?>
-                            <?php foreach ($products as $product): ?>
-                                <?php echo $product->displayInTable(); ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="7" align="center">No products found matching your search.</td>
-                            </tr>
-                        <?php endif; ?>
-                        </tbody>
-
-                        <tfoot>
-                        <tr>
-                            <td colspan="7" align="center"><i>🔄 Last updated: <?php echo date("F d, Y"); ?></i></td>
-                        </tr>
-                        </tfoot>
-
-                    </table>
-                </section>
-            </fieldset>
+            <h2>🛍️ Explore & Find Your Perfect Fit</h2>
+            <p>Use the form below to filter our catalog!</p>
+            <form method="POST" action="products.php">
+                <fieldset>
+                    <legend>🔍 Advanced Product Search</legend>
+                    <p>
+                        <label for="productName">🧾 Product Name:</label><br>
+                        <input type="text" name="productName" id="productName"
+                               placeholder="e.g., Classic Denim Jacket"
+                               value="<?php echo htmlspecialchars($productName); ?>">
+                    </p>
+                    <p>
+                        <label for="productPrice">💰 Max Price:</label><br>
+                        <input type="text" name="productPrice" id="productPrice" placeholder="e.g., 80"
+                               value="<?php echo htmlspecialchars($productPrice); ?>">
+                    </p>
+                    <p>
+                        <label for="productCategory">📂 Category:</label><br>
+                        <select name="productCategory" id="productCategory">
+                            <option value="">-- Choose Category --</option>
+                            <option value="Formal Shirts" <?php if ($productCategory === 'Formal Shirts') echo 'selected'; ?>>Formal Shirts</option>
+                            <option value="Casual T-Shirts" <?php if ($productCategory === 'Casual T-Shirts') echo 'selected'; ?>>Casual T-Shirts</option>
+                            <option value="Jeans" <?php if ($productCategory === 'Jeans') echo 'selected'; ?>>Jeans</option>
+                            <option value="Outerwear" <?php if ($productCategory === 'Outerwear') echo 'selected'; ?>>Outerwear</option>
+                            <option value="Activewear" <?php if ($productCategory === 'Activewear') echo 'selected'; ?>>Activewear</option>
+                        </select>
+                    </p>
+                    <p>
+                        <button type="submit">🔎 Filter Products</button>
+                    </p>
+                </fieldset>
+            </form>
         </section>
+    </aside>
 
+    <!-- Product grid with pagination -->
+    <section class="product-grid">
+        <div class="product-items">
+            <?php if (count($products) > 0): ?>
+                <?php foreach ($products as $product): ?>
+                    <article class="product-card">
+                        <section class="product-image-container">
+                            <img src="images/<?php echo htmlspecialchars($product->getImageName() ?: 'default.jpg'); ?>" alt="Product Image">
+                        </section>
+                        <section class="product-info">
+                            <h3 class="product-id">🆔 <?php echo htmlspecialchars($product->getProductId()); ?></h3>
+                            <span class="product-name" tabindex="0"><?php echo htmlspecialchars($product->getProductName() ?: 'Unknown Product'); ?></span>
+                            <section class="tooltip">
+                                <h2 class="<?php echo $product->getQuantity() <= 5 ? 'low-stock' : 'normal-stock'; ?>">
+                                    Quantity: <?php echo htmlspecialchars($product->getQuantity() ?: 0); ?>
+                                </h2>
+                                <p><?php echo htmlspecialchars($product->getDescription() ?: 'No description available.'); ?></p>
+                            </section>
+                            <span class="category-badge">
+                                    <?php echo htmlspecialchars($product->getCategory() ?: 'Uncategorized'); ?>
+                                </span>
+                            <span class="price">$<?php echo htmlspecialchars($product->getPrice() ?: '0.00'); ?></span>
+                            <nav class="action-buttons">
+                                <a href="view.php?id=<?php echo htmlspecialchars($product->getProductId()); ?>" class="view-button">View</a>
+                                <a href="cart.php?action=add&id=<?php echo htmlspecialchars($product->getProductId()); ?>" class="add-to-cart-button">Add to Cart</a>
+                            </nav>
+                        </section>
+                    </article>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No products found matching your search. Try adjusting your filters or <a href="products.php">view all products</a>.</p>
+            <?php endif; ?>
+        </div>
+        <nav class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="products.php?page=<?php echo $page - 1; ?>" class="previous">Previous</a>
+            <?php endif; ?>
+            <?php if ($page < $totalPages): ?>
+                <a href="products.php?page=<?php echo $page + 1; ?>" class="next">Next</a>
+            <?php endif; ?>
+        </nav>
     </section>
 </main>
 
-<hr>
-<br>
-
-<footer>
-    <address>
-        <strong>📍 Store Address:</strong> Palestine, Ramallah, Israa Complex, second floor |
-        <a href="tel:+972594276335">📞 Customer Support</a> |
-        <a href="mailto:nabilayman021@gmail.com">📧 Email</a> |
-        <a href="contactUs.php">📬 Contact Us</a>
-    </address>
-</footer>
-
+<!-- Including footer -->
+<?php include_once "footer.php"; ?>
 </body>
 </html>
