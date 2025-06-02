@@ -8,11 +8,13 @@
             <p>Levon is your premier fashion destination, offering curated collections for every style and occasion
                 since 2010.</p>
             <nav class="social-links">
-                <a href="https://instagram.com/ayman_tarifi" aria-label="Instagram"><img src="images/instagram.png"
-                                                                                         alt="Instagram"></a>
-                <a href="https://www.facebook.com/ayman.nabil.58726" aria-label="Facebook"><img
+                <a href="https://instagram.com/ayman_tarifi" aria-label="Instagram" target="_blank"><img
+                            src="images/instagram.png"
+                            alt="Instagram"></a>
+                <a href="https://www.facebook.com/ayman.nabil.58726" aria-label="Facebook" target="_blank"><img
                             src="images/facebook.png" alt="Facebook"></a>
-                <a href="https://www.linkedin.com/in/ayman-alqayem-9012a232a/" aria-label="LinkedIn"><img
+                <a href="https://www.linkedin.com/in/ayman-alqayem-9012a232a/" aria-label="LinkedIn"
+                   target="_blank"><img
                             src="images/linkedin.png" alt="LinkedIn"></a>
             </nav>
         </section>
