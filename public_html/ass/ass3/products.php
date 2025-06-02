@@ -95,10 +95,10 @@ try {
 
 <?php include_once "nav.php"; ?>
 
-<!-- Main content with grid layout -->
+
 <main class="container">
     <!-- Search panel -->
-    <aside class="search-panel">
+    <aside class="search-panel" id="search">
         <section>
             <h2>🛍️ Explore & Find Your Perfect Fit</h2>
             <p>Use the form below to filter our catalog!</p>
@@ -120,11 +120,20 @@ try {
                         <label for="productCategory">📂 Category:</label><br>
                         <select name="productCategory" id="productCategory">
                             <option value="">-- Choose Category --</option>
-                            <option value="Formal Shirts" <?php if ($productCategory === 'Formal Shirts') echo 'selected'; ?>>Formal Shirts</option>
-                            <option value="Casual T-Shirts" <?php if ($productCategory === 'Casual T-Shirts') echo 'selected'; ?>>Casual T-Shirts</option>
-                            <option value="Jeans" <?php if ($productCategory === 'Jeans') echo 'selected'; ?>>Jeans</option>
-                            <option value="Outerwear" <?php if ($productCategory === 'Outerwear') echo 'selected'; ?>>Outerwear</option>
-                            <option value="Activewear" <?php if ($productCategory === 'Activewear') echo 'selected'; ?>>Activewear</option>
+                            <option value="Formal Shirts" <?php if ($productCategory === 'Formal Shirts') echo 'selected'; ?>>
+                                Formal Shirts
+                            </option>
+                            <option value="Casual T-Shirts" <?php if ($productCategory === 'Casual T-Shirts') echo 'selected'; ?>>
+                                Casual T-Shirts
+                            </option>
+                            <option value="Jeans" <?php if ($productCategory === 'Jeans') echo 'selected'; ?>>Jeans
+                            </option>
+                            <option value="Outerwear" <?php if ($productCategory === 'Outerwear') echo 'selected'; ?>>
+                                Outerwear
+                            </option>
+                            <option value="Activewear" <?php if ($productCategory === 'Activewear') echo 'selected'; ?>>
+                                Activewear
+                            </option>
                         </select>
                     </p>
                     <p>
@@ -137,16 +146,18 @@ try {
 
     <!-- Product grid with pagination -->
     <section class="product-grid">
-        <div class="product-items">
+        <section class="product-items">
             <?php if (count($products) > 0): ?>
                 <?php foreach ($products as $product): ?>
                     <article class="product-card">
                         <section class="product-image-container">
-                            <img src="images/<?php echo htmlspecialchars($product->getImageName() ?: 'default.jpg'); ?>" alt="Product Image">
+                            <img src="images/<?php echo htmlspecialchars($product->getImageName() ?: 'default.jpg'); ?>"
+                                 alt="Product Image">
                         </section>
                         <section class="product-info">
                             <h3 class="product-id">🆔 <?php echo htmlspecialchars($product->getProductId()); ?></h3>
-                            <span class="product-name" tabindex="0"><?php echo htmlspecialchars($product->getProductName() ?: 'Unknown Product'); ?></span>
+                            <span class="product-name"
+                                  tabindex="0"><?php echo htmlspecialchars($product->getProductName() ?: 'Unknown Product'); ?></span>
                             <section class="tooltip">
                                 <h2 class="<?php echo $product->getQuantity() <= 5 ? 'low-stock' : 'normal-stock'; ?>">
                                     Quantity: <?php echo htmlspecialchars($product->getQuantity() ?: 0); ?>
@@ -158,16 +169,19 @@ try {
                                 </span>
                             <span class="price">$<?php echo htmlspecialchars($product->getPrice() ?: '0.00'); ?></span>
                             <nav class="action-buttons">
-                                <a href="view.php?id=<?php echo htmlspecialchars($product->getProductId()); ?>" class="view-button">View</a>
-                                <a href="cart.php?action=add&id=<?php echo htmlspecialchars($product->getProductId()); ?>" class="add-to-cart-button">Add to Cart</a>
+                                <a href="view.php?id=<?php echo htmlspecialchars($product->getProductId()); ?>"
+                                   class="view-button">View</a>
+                                <a href="cart.php?action=add&id=<?php echo htmlspecialchars($product->getProductId()); ?>"
+                                   class="add-to-cart-button">Add to Cart</a>
                             </nav>
                         </section>
                     </article>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>No products found matching your search. Try adjusting your filters or <a href="products.php">view all products</a>.</p>
+                <p>No products found matching your search. Try adjusting your filters or <a href="products.php">view all
+                        products</a>.</p>
             <?php endif; ?>
-        </div>
+        </section>
         <nav class="pagination">
             <?php if ($page > 1): ?>
                 <a href="products.php?page=<?php echo $page - 1; ?>" class="previous">Previous</a>
@@ -179,7 +193,6 @@ try {
     </section>
 </main>
 
-<!-- Including footer -->
 <?php include_once "footer.php"; ?>
 </body>
 </html>
