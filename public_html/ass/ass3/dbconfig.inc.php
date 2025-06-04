@@ -2,23 +2,23 @@
 
 function getPDOConnection()
 {
-    $host = "127.0.0.1";
-    $port = "3306";
-    $dbname = "web1220040_clothingStore";
-    $username = "root";
-    $password = "root";
-
-    $dsn = "mysql:host=$host;port=$port;dbname=$dbname";
+//    $host = "127.0.0.1";
+//    $port = "3306";
+//    $dbname = "web1220040_clothingStore";
+//    $username = "root";
+//    $password = "root";
+//
+//    $dsn = "mysql:host=$host;port=$port;dbname=$dbname";
 
     //For cs panel server.
 
-//    $host = "localhost";
-//    $port = "3306";
-//    $dbname = "web1220040_clothingStore";
-//    $username = "web1220040_dbuser";
-//    $password = "dJQ!6Xckbt";
-//
-//    $dsn = "mysql:host=$host;port=$port;dbname=$dbname";
+    $host = "localhost";
+    $port = "3306";
+    $dbname = "web1220040_clothingStore";
+    $username = "web1220040_dbuser";
+    $password = "dJQ!6Xckbt";
+
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname";
 
     try {
 

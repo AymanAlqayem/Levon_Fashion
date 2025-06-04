@@ -72,32 +72,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Add New Product</title>
 </head>
 
 <body>
 
-<header>
-    <h1>👕👗 WELCOME TO LEVON 👠🧥</h1>
-    <h2>"Wear Your Style, Anywhere"</h2>
-
-    <figure>
-        <img src="images/logo.png" alt="Levon logo" width="200" height="180">
-        <figcaption><strong>Your Fashion Destination</strong></figcaption>
-    </figure>
-
-    <hr>
-    <br>
-
-    <nav>
-        🏠 <a href="products.php">Home</a> |
-        ➕ <a href="add.php">Add Product</a> |
-        🔍 <a href="products.php#search">Search</a>
-    </nav>
-
-    <br>
-    <hr>
-</header>
+<?php include 'header.php'; ?>
+<?php include 'nav.php'; ?>
 
 <main>
     <section>
@@ -170,16 +152,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <hr>
 
-<footer>
-    <address>
-        <strong>📍 Store Address:</strong> Palestine, Ramallah, Israa Complex, second floor |
-        <a href="tel:+972594276335">📞 Customer Support</a> |
-        <a href="mailto:nabilayman021@gmail.com">📧 Email</a> |
-        <a href="contactUs.php">📬 Contact Us</a>
-    </address>
-</footer>
-
 </body>
+
+<?php include 'footer.php'; ?>
 
 </html>
 

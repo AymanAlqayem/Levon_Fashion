@@ -24,7 +24,7 @@
             <nav>
                 <a href="products.php">Home</a>
                 <a href="add.php">Add Product</a>
-                <a href="#search">Search</a>
+                <a href="products.php#search">Search</a>
                 <a href="contactUs.php">Contact Us</a>
             </nav>
         </section>

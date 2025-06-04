@@ -2,30 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Contact Us</title>
 </head>
 <body>
 
-<header>
-    <h1>👕👗 WELCOME TO LEVON 👠🧥</h1>
-    <h2>"Wear Your Style, Anywhere"</h2>
-    <figure>
-        <img src="images/logo.png" alt="Levon logo" width="150" height="150">
-        <figcaption><strong>Your Fashion Destination</strong></figcaption>
-    </figure>
-
-    <hr>
-    <br>
-
-    <nav>
-        🏠 <a href="products.php">Home</a> |
-        ➕ <a href="products.php">Add Product</a> |
-        🔍 <a href="products.php/search">Search</a>
-    </nav>
-
-    <br>
-    <hr>
-</header>
+<?php include 'header.php'; ?>
+<?php include 'nav.php'; ?>
 
 <main>
     <section>
@@ -91,15 +75,7 @@
 
 </main>
 
-<footer>
-    <br><br>
-    <address>
-        <strong>📍 Store Address:</strong> Palestine, Ramallah, Israa Complex, second floor |
-        <a href="tel:+972594276335">📞 Customer Support</a> |
-        <a href="mailto:nabilayman021@gmail.com">📧 Email</a> |
-        <a href="contactUs.php">📬 Contact Us</a>
-    </address>
-</footer>
+<?php include 'footer.php'; ?>
 
 </body>
 </html>
