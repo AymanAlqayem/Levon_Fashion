@@ -19,30 +19,15 @@ $productData = $stmt->fetch(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>Product Details - LEVON</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header>
-    <h1>👕👗 WELCOME TO LEVON 👠🧥</h1>
-    <h2>"Wear Your Style, Anywhere"</h2>
+<?php include_once "header.php"; ?>
 
-    <figure>
-        <img src="images/logo.png" alt="Levon logo" width="200" height="180">
-        <figcaption><strong>Your Fashion Destination</strong></figcaption>
-    </figure>
 
-    <hr>
-    <br>
-
-    <nav>
-        🏠 <a href="products.php">Home</a> |
-        ➕ <a href="add.php">Add Product</a> |
-        🔍 <a href="products.php#search">Search</a>
-    </nav>
-
-    <br>
-    <hr>
-</header>
+<?php include_once "nav.php"; ?>
 
 <main>
     <section>
@@ -73,14 +58,6 @@ $productData = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <hr>
 
-<footer>
-    <address>
-        <strong>📍 Store Address:</strong> Palestine, Ramallah, Israa Complex, second floor |
-        <a href="tel:+972594276335">📞 Customer Support</a> |
-        <a href="mailto:nabilayman021@gmail.com">📧 Email</a> |
-        <a href="contactUs.php">📬 Contact Us</a>
-    </address>
-</footer>
-
+<?php include_once "footer.php"; ?>
 </body>
 </html>

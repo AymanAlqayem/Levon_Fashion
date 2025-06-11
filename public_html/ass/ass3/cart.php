@@ -3,6 +3,7 @@ session_start();
 require_once "dbconfig.inc.php";
 
 $sessionId = session_id();
+
 // Generate CSRF token
 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
